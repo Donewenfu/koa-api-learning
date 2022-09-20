@@ -4,25 +4,16 @@ const Koa = require('koa')
 const app = new Koa()
 
 // koa中间件
-// app.use((ctx, next)=>{
-//     // ctx 上下文
-//     console.log('1')
-//     // 如果要执行下一个中间件 需要执行 next参数
-//     let a = next()
-//     console.log(a)
-//     console.log('2')
-// })
+app.use(async (ctx, next)=>{
+    await next()
+    console.log(ctx.r)
+})
 
 app.use(async (ctx, next) => {
-    // console.log('3')
-    // next()
-    // console.log('4')
     const axios = require('axios')
-    const start = Date.now()
-    const data = await axios.get('https://talelin.com/')
-    const end = Date.now()
-    console.log(end-start)
-    console.log(data)
+    const data = await axios.get('http://toutiao.itheima.net/dist/index.html#/')
+    ctx.r = data
+    await next()
 })
 
 // 监听端口号 8148
