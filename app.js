@@ -1,20 +1,22 @@
+// koa
 const Koa = require('koa')
-
+// bodyParse
+const bodyParse = require('koa-body')
+// 初始化
+const initManage = require('./app/core/initManage')
 // 创建一个应用程序对象
 const app = new Koa()
 
-// koa中间件
-app.use(async (ctx, next)=>{
-    await next()
-    console.log(ctx.r)
-})
+// bodyParse 中间件
+app.use(bodyParse({
+    multipart: true // 是否支持 multipart-formdate 的表单
+}))
 
-app.use(async (ctx, next) => {
-    const axios = require('axios')
-    const data = await axios.get('http://toutiao.itheima.net/dist/index.html#/')
-    ctx.r = data
-    await next()
-})
+initManage.initApp(app)
+
+
 
 // 监听端口号 8148
-app.listen(8148)
+app.listen(8148, () => {
+    console.log('服务器已经开启**********')
+})
